@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// src/App.tsx
+import { QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import CacheClearer from "./src/components/CacheClearer";
+import PausedMutationsDisplay from "./src/components/PausedMutationsDisplay";
+import TodoList from "./src/components/TodoList";
+import { queryClient } from "./src/queryClient";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <CacheClearer />
+      <TodoList />
+      <PausedMutationsDisplay />
+    </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
