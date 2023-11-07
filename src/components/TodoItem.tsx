@@ -1,45 +1,54 @@
 // src/components/TodoItem.tsx
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { TodoUpdateInput } from "../types";
+import { TodoUpdateInput } from "../types"; // Importing type definitions for TodoUpdateInput
 
+// Typing for props expected by the TodoItem component
 type TodoItemProps = {
   todo: {
     id: number;
     text: string;
     completed: boolean;
   };
-  updateTodo: (todoUpdate: TodoUpdateInput) => void;
+  updateTodo: (todoUpdate: TodoUpdateInput) => void; // Function type for updating a todo
 };
 
+// Functional component for individual todo items
 export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
+  // State for the editable text field
   const [editText, setEditText] = useState(todo.text);
+  // State to track if the todo item is being edited
   const [isEditing, setIsEditing] = useState(false);
 
+  // Function to handle saving the edited text
   const handleSave = () => {
     updateTodo({
       id: todo.id,
       text: editText,
-      completed: todo.completed, // Keep the completed status unchanged
+      completed: todo.completed, // Maintain existing completion status
     });
-    setIsEditing(false); // Exit editing mode after saving
+    setIsEditing(false); // Exit editing mode upon save
   };
 
+  // Function to handle toggling the completed status of a todo
   const handleComplete = () => {
     updateTodo({
       id: todo.id,
-      completed: !todo.completed, // Toggle the completed status
+      completed: !todo.completed, // Toggle completion status
     });
   };
 
+  // Function to toggle edit mode and reset edit text
   const toggleEdit = () => {
     setIsEditing(!isEditing);
-    setEditText(todo.text); // Reset text to current todo text when toggling edit mode
+    setEditText(todo.text); // Reset editText state to current todo's text when editing is toggled
   };
 
+  // The UI of the todo item, conditionally showing either the edit view or the view mode
   return (
     <View style={styles.todoItem}>
       {isEditing ? (
+        // Edit mode: TextInput and Save/Cancel buttons
         <>
           <TextInput
             style={styles.todoInput}
@@ -51,6 +60,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
           <Button title="Cancel" onPress={toggleEdit} />
         </>
       ) : (
+        // View mode: Todo text and Edit/Complete/Undo buttons
         <>
           <Text style={[styles.todoText, todo.completed && styles.completedText]}>{todo.text}</Text>
           <Button title="Edit" onPress={toggleEdit} />

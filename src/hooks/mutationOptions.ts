@@ -1,45 +1,76 @@
 // src/hooks/mutationOptions.ts
-import { QueryClient, UseMutationOptions } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient, UseMutationOptions, onlineManager } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { Todo, TodoUpdateInput } from "../types";
 
-// Function to generate mutation options for updating a todo item
+/**
+ * Provides mutation options to update a todo item, with optimistic updates and offline support.
+ *
+ * @param queryClient - The QueryClient instance from @tanstack/react-query to manage query states.
+ * @returns {UseMutationOptions<Todo, Error, TodoUpdateInput, { previousTodos?: Todo[] }>}
+ */
 export function getMutationOptions(
   queryClient: QueryClient
 ): UseMutationOptions<Todo, Error, TodoUpdateInput, { previousTodos?: Todo[] }> {
   return {
-    // The function to call to perform the mutation
+    // Define the mutation function which calls the update service for a todo item.
     mutationFn: todoService.updateTodo,
-    // Function that will be run before the mutation function is fired
+
+    // Prepares for mutation execution by first canceling any ongoing refetches
+    // and then performing an optimistic update on the cache.
     onMutate: async (updatedTodo) => {
-      // Cancel any outgoing refetches for `todos` so they don't overwrite our optimistic update
+      // Prevent refetches from overwriting pending updates by canceling query refetches.
       await queryClient.cancelQueries({
         queryKey: ["todos"],
       });
 
-      // Retrieve the current todos from the cache
+      // Snapshot the current state before the mutation to allow for rollbacks.
       const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]);
 
-      // Optimistically update the cache with the new todo
+      // Update the todo item optimistically in the cache to reflect the changes immediately.
       if (previousTodos) {
         queryClient.setQueryData<Todo[]>(["todos"], (old = []) =>
           old.map((todo) => (todo.id === updatedTodo.id ? { ...todo, ...updatedTodo } : todo))
         );
       }
 
-      // Return the previous state for rollback in case of an error
-      return { previousTodos };
+      // Object to hold potential rollback information to undo the optimistic update if needed.
+      const context = { previousTodos };
+
+      // If offline, store the pending mutation in AsyncStorage for execution when online.
+      if (!onlineManager.isOnline()) {
+        // Retrieve any previously stored mutations from AsyncStorage.
+        const pausedMutationsString = await AsyncStorage.getItem("pausedMutations");
+        const pausedMutations = pausedMutationsString ? JSON.parse(pausedMutationsString) : [];
+
+        // Check if the current mutation is already stored to prevent duplicates.
+        const existingMutationIndex = pausedMutations.findIndex((m) => m.id === updatedTodo.id);
+        // Update the stored mutation with new data or push it if it's a new mutation.
+        if (existingMutationIndex === -1) {
+          pausedMutations.push(updatedTodo);
+        } else {
+          pausedMutations[existingMutationIndex] = updatedTodo;
+        }
+        // Persist the updated list of mutations to AsyncStorage.
+        await AsyncStorage.setItem("pausedMutations", JSON.stringify(pausedMutations));
+      }
+
+      // Return the rollback context for use if the mutation fails later.
+      return context;
     },
-    // Function that will be run if the mutation encounters an error
+
+    // Handles mutation errors by rolling back optimistic updates using the context provided.
     onError: (err: Error, newTodo: TodoUpdateInput, context?: { previousTodos?: Todo[] }) => {
-      // Roll back the optimistic update if the mutation fails
+      // If there's a previous state available, revert to it to undo the optimistic update.
       if (context?.previousTodos) {
         queryClient.setQueryData(["todos"], context.previousTodos);
       }
     },
-    // Function that will be run when the mutation has either succeeded or failed
+
+    // Cleanup or finalization logic after the mutation is either successful or unsuccessful.
     onSettled: () => {
-      // Invalidate the `todos` queries to refetch the latest data
+      // Ensure the latest todo data is fetched by invalidating the relevant queries.
       queryClient.invalidateQueries({
         queryKey: ["todos"],
       });

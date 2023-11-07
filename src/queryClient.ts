@@ -1,11 +1,13 @@
 // src/queryClient.ts
 import { QueryClient } from "@tanstack/react-query";
 
+/* The code is creating a new instance of the `QueryClient` class and exporting it as `queryClient`.
+The `QueryClient` is a client for managing and caching data queries in the React Query library. */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1000 * 60 * 60 * 24, // 24 hours
-      staleTime: 0,
+      gcTime: Infinity,
+      staleTime: Infinity,
     },
   },
 });
