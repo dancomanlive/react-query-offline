@@ -1,51 +1,32 @@
-// src/contexts/ConnectivityContext.tsx
-
-import NetInfo from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
 import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface ConnectivityContextProps {
   isConnected: boolean;
-  setIsConnected: (value: boolean) => void;
 }
 
-interface ConnectivityProviderProps {
-  children: ReactNode; // Use ReactNode for children as it can be anything renderable.
-}
+const ConnectivityContext = createContext<ConnectivityContextProps>({ isConnected: false });
 
-// Create a context with a default value.
-export const ConnectivityContext = createContext<ConnectivityContextProps>({
-  isConnected: false,
-  setIsConnected: (value: boolean) => {},
-});
+// Define a type for the props expected by the ConnectivityProvider component
+type ConnectivityProviderProps = {
+  children: ReactNode; // Explicitly type 'children' as ReactNode
+};
 
-// Component to provide the context value
 export const ConnectivityProvider: React.FC<ConnectivityProviderProps> = ({ children }) => {
+  const netInfo = useNetInfo();
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    // Subscribe to connectivity changes
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      const connected = !!state.isConnected;
-      onlineManager.setOnline(connected);
-      setIsConnected(connected);
-    });
+    // Set the online status in react-query's onlineManager as well as in local state
+    const connected = netInfo.isConnected ?? false;
+    onlineManager.setOnline(connected);
+    setIsConnected(connected);
+  }, [netInfo.isConnected]); // Effect runs on change of netInfo.isConnected
 
-    // Unsubscribe on cleanup
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  // Provide the current connectivity status and a method to update it
   return (
-    <ConnectivityContext.Provider value={{ isConnected, setIsConnected }}>
-      {children}
-    </ConnectivityContext.Provider>
+    <ConnectivityContext.Provider value={{ isConnected }}>{children}</ConnectivityContext.Provider>
   );
 };
 
-// Hook to use the connectivity status in a component
-export const useConnectivity = () => {
-  return useContext(ConnectivityContext);
-};
+export const useConnectivity = () => useContext(ConnectivityContext);
