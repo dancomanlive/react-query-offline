@@ -1,6 +1,7 @@
 // src/hooks/mutationOptions.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { QueryClient, UseMutationOptions, onlineManager } from "@tanstack/react-query";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { QueryClient, UseMutationOptions } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { Todo, TodoUpdateInput } from "../types";
 
@@ -13,6 +14,7 @@ import { Todo, TodoUpdateInput } from "../types";
 export function getMutationOptions(
   queryClient: QueryClient
 ): UseMutationOptions<Todo, Error, TodoUpdateInput, { previousTodos?: Todo[] }> {
+  const netInfo = useNetInfo(); // Checking network status
   return {
     // Define the mutation function which calls the update service for a todo item.
     mutationFn: todoService.updateTodo,
@@ -39,7 +41,7 @@ export function getMutationOptions(
       const context = { previousTodos };
 
       // If offline, store the pending mutation in AsyncStorage for execution when online.
-      if (!onlineManager.isOnline()) {
+      if (!netInfo.isConnected) {
         // Retrieve any previously stored mutations from AsyncStorage.
         const pausedMutationsString = await AsyncStorage.getItem("pausedMutations");
         const pausedMutations = pausedMutationsString ? JSON.parse(pausedMutationsString) : [];

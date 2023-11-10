@@ -14,7 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.app"
+      "bundleIdentifier": "KFQ27T6MUL.com.example.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      ["expo-community-flipper"],
       [
         "expo-build-properties",
         {
@@ -35,6 +36,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d0c2ce2d-242c-42d8-9b97-43590630351f"
+      }
+    }
   }
 }

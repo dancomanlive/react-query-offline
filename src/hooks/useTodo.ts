@@ -1,6 +1,6 @@
 // src/hooks/useTodo.ts
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
-import * as todoService from "../api/todoService";
+import { getTodos } from "../api/todoService";
 import { Todo } from "../types";
 import { getMutationOptions } from "./mutationOptions";
 
@@ -10,7 +10,7 @@ export const useTodo = () => {
   // Define the query options object
   const todosQueryOptions: UseQueryOptions<Todo[], Error> = {
     queryKey: ["todos"], // This is the queryKey in an object
-    queryFn: todoService.getTodos, // This is your query function
+    queryFn: getTodos, // This is your query function
     // You can add more options here like 'staleTime', 'cacheTime', etc.
   };
 

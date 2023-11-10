@@ -1,12 +1,13 @@
 // src/types/index.ts
 export type Todo = {
+  userId: number;
   id: number;
-  text: string;
+  title: string;
   completed: boolean;
 };
 
 export type TodoUpdateInput = {
   id: number;
-  text?: string;
+  title?: string;
   completed?: boolean;
 };

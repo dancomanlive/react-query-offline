@@ -7,7 +7,7 @@ import { TodoUpdateInput } from "../types"; // Importing type definitions for To
 type TodoItemProps = {
   todo: {
     id: number;
-    text: string;
+    title: string;
     completed: boolean;
   };
   updateTodo: (todoUpdate: TodoUpdateInput) => void; // Function type for updating a todo
@@ -16,7 +16,7 @@ type TodoItemProps = {
 // Functional component for individual todo items
 export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
   // State for the editable text field
-  const [editText, setEditText] = useState(todo.text);
+  const [editText, setEditText] = useState(todo.title);
   // State to track if the todo item is being edited
   const [isEditing, setIsEditing] = useState(false);
 
@@ -24,7 +24,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
   const handleSave = () => {
     updateTodo({
       id: todo.id,
-      text: editText,
+      title: editText,
       completed: todo.completed, // Maintain existing completion status
     });
     setIsEditing(false); // Exit editing mode upon save
@@ -41,7 +41,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
   // Function to toggle edit mode and reset edit text
   const toggleEdit = () => {
     setIsEditing(!isEditing);
-    setEditText(todo.text); // Reset editText state to current todo's text when editing is toggled
+    setEditText(todo.title); // Reset editText state to current todo's text when editing is toggled
   };
 
   // The UI of the todo item, conditionally showing either the edit view or the view mode
@@ -62,7 +62,9 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
       ) : (
         // View mode: Todo text and Edit/Complete/Undo buttons
         <>
-          <Text style={[styles.todoText, todo.completed && styles.completedText]}>{todo.text}</Text>
+          <Text style={[styles.todoText, todo.completed && styles.completedText]}>
+            {todo.title}
+          </Text>
           <Button title="Edit" onPress={toggleEdit} />
           <Button title={todo.completed ? "Undo" : "Complete"} onPress={handleComplete} />
         </>

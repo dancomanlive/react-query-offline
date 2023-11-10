@@ -1,31 +1,21 @@
 // src/api/todoService.ts
 
-export type Todo = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
-
-export type TodoUpdateInput = {
-  id: number;
-  text?: string;
-  completed?: boolean;
-};
-
-const API_URL = "http://localhost:3000/todos";
+import { jsonPlaceholderBaseURL } from "../constants/BaseUrl";
+import { Todo, TodoUpdateInput } from "../types";
 
 // Fetch all todos from the server
 export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch(API_URL);
+  const userIdQuery = `?userId=1`;
+  const response = await fetch(`${jsonPlaceholderBaseURL}/todos${userIdQuery}`);
   if (!response.ok) {
-    throw new Error("Error fetching todos");
+    throw new Error("Network response was not ok");
   }
   return response.json();
 }
 
 // Update a todo item on the server
 export async function updateTodo(todoUpdate: TodoUpdateInput): Promise<Todo> {
-  const response = await fetch(`${API_URL}/${todoUpdate.id}`, {
+  const response = await fetch(`${jsonPlaceholderBaseURL}/posts/${todoUpdate.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -38,4 +28,22 @@ export async function updateTodo(todoUpdate: TodoUpdateInput): Promise<Todo> {
   return response.json();
 }
 
-// Add more service functions as needed for creating, deleting, etc.
+// Add a todo item on the server
+export async function addTodo(title: string = "Default Title", userId: number = 1): Promise<Todo> {
+  const response = await fetch(`${jsonPlaceholderBaseURL}/todos`, {
+    method: "POST",
+    body: JSON.stringify({
+      title,
+      completed: false, // Default value for completed is set to false
+      userId,
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Error adding new todo");
+  }
+  return response.json();
+}
