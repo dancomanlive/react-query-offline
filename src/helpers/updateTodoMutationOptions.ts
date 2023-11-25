@@ -1,19 +1,16 @@
-// src/hooks/mutationOptions.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { QueryClient, UseMutationOptions } from "@tanstack/react-query";
+import { UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
-import { Todo, TodoUpdateInput } from "../types";
+import { Todo, TodoUpdateInput } from "../shared-types";
 
-/**
- * Provides mutation options to update a todo item, with optimistic updates and offline support.
- *
- * @param queryClient - The QueryClient instance from @tanstack/react-query to manage query states.
- * @returns {UseMutationOptions<Todo, Error, TodoUpdateInput, { previousTodos?: Todo[] }>}
- */
-export function getMutationOptions(
-  queryClient: QueryClient
-): UseMutationOptions<Todo, Error, TodoUpdateInput, { previousTodos?: Todo[] }> {
+export function updateTodoMutationOptions(): UseMutationOptions<
+  Todo,
+  Error,
+  TodoUpdateInput,
+  { previousTodos?: Todo[] }
+> {
+  const queryClient = useQueryClient();
   const netInfo = useNetInfo(); // Checking network status
   return {
     // Define the mutation function which calls the update service for a todo item.

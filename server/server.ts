@@ -46,6 +46,35 @@ app.patch("/todos/:id", (req: Request, res: Response) => {
   }
 });
 
+// Add a new todo
+app.post("/todos", (req: Request, res: Response) => {
+  const { text, completed } = req.body;
+
+  // Generate a new ID
+  const newTodo: Todo = {
+    id: Date.now(),
+    text,
+    completed: completed || false, // Default to false if not provided
+  };
+
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
+});
+
+// Delete a todo
+app.delete("/todos/:id", (req: Request, res: Response) => {
+  const { id } = req.params;
+  const todoId = parseInt(id, 10);
+
+  const todoIndex = todos.findIndex((todo) => todo.id === todoId);
+  if (todoIndex > -1) {
+    todos.splice(todoIndex, 1);
+    res.status(204).send();
+  } else {
+    res.status(404).send("Todo not found");
+  }
+});
+
 app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Welcome to the Todo API!");
 });

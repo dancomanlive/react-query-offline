@@ -1,98 +1,52 @@
-// src/components/TodoItem.tsx
-import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { TodoUpdateInput } from "../types"; // Importing type definitions for TodoUpdateInput
+import React from "react";
+import { View } from "react-native";
+import useTodoItemActions from "../hooks/useTodoItemActions";
+import { Todo } from "../shared-types";
+import { styles } from "../styles/TodoItem.styles";
+import EditTodoView from "./EditTodo";
+import ViewTodo from "./ViewTodo";
 
-// Typing for props expected by the TodoItem component
-type TodoItemProps = {
-  todo: {
-    id: number;
-    title: string;
-    completed: boolean;
-  };
-  updateTodo: (todoUpdate: TodoUpdateInput) => void; // Function type for updating a todo
-};
+// Props type definition for the TodoItem component.
+interface TodoItemProps {
+  todo: Todo; // The todo item to be displayed or edited.
+}
 
-// Functional component for individual todo items
-export const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo }) => {
-  // State for the editable text field
-  const [editText, setEditText] = useState(todo.title);
-  // State to track if the todo item is being edited
-  const [isEditing, setIsEditing] = useState(false);
+// TodoItem component responsible for rendering a single todo item.
+export default function TodoItem({ todo }: TodoItemProps) {
+  // Custom hook that manages the state and actions for a todo item.
+  // This includes the editable state of the todo, the current text being edited, and the action handlers.
+  const {
+    editText,
+    setEditText,
+    isEditing,
+    handleSave,
+    handleComplete,
+    toggleEdit,
+    handleDeleteTodo,
+  } = useTodoItemActions({ todo });
 
-  // Function to handle saving the edited text
-  const handleSave = () => {
-    updateTodo({
-      id: todo.id,
-      title: editText,
-      completed: todo.completed, // Maintain existing completion status
-    });
-    setIsEditing(false); // Exit editing mode upon save
-  };
-
-  // Function to handle toggling the completed status of a todo
-  const handleComplete = () => {
-    updateTodo({
-      id: todo.id,
-      completed: !todo.completed, // Toggle completion status
-    });
-  };
-
-  // Function to toggle edit mode and reset edit text
-  const toggleEdit = () => {
-    setIsEditing(!isEditing);
-    setEditText(todo.title); // Reset editText state to current todo's text when editing is toggled
-  };
-
-  // The UI of the todo item, conditionally showing either the edit view or the view mode
   return (
     <View style={styles.todoItem}>
+      {/* Conditional rendering based on whether the todo item is being edited or not. */}
       {isEditing ? (
-        // Edit mode: TextInput and Save/Cancel buttons
-        <>
-          <TextInput
-            style={styles.todoInput}
-            value={editText}
-            onChangeText={setEditText}
-            placeholder="Edit Todo"
-          />
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Cancel" onPress={toggleEdit} />
-        </>
+        // Edit mode: renders the EditTodoView component which provides an input for editing the todo's text
+        // and buttons for saving or canceling the edit operation.
+        <EditTodoView
+          editText={editText}
+          setEditText={setEditText}
+          handleSave={handleSave}
+          toggleEdit={toggleEdit}
+        />
       ) : (
-        // View mode: Todo text and Edit/Complete/Undo buttons
-        <>
-          <Text style={[styles.todoText, todo.completed && styles.completedText]}>
-            {todo.title}
-          </Text>
-          <Button title="Edit" onPress={toggleEdit} />
-          <Button title={todo.completed ? "Undo" : "Complete"} onPress={handleComplete} />
-        </>
+        // View mode: renders the ViewTodo component which displays the todo's text
+        // and provides buttons for deleting, completing, or editing the todo.
+        <ViewTodo
+          todo={todo}
+          handleDeleteTodo={handleDeleteTodo}
+          handleComplete={handleComplete}
+          toggleEdit={toggleEdit}
+        />
       )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  todoItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    justifyContent: "space-between",
-  },
-  todoInput: {
-    borderWidth: 1,
-    borderColor: "gray",
-    marginRight: 10,
-    padding: 10,
-    flex: 1,
-  },
-  todoText: {
-    flex: 1,
-    marginRight: 10,
-  },
-  completedText: {
-    textDecorationLine: "line-through",
-    color: "grey",
-  },
-});
+}

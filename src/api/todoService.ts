@@ -1,12 +1,14 @@
 // src/api/todoService.ts
+import { Todo, TodoUpdateInput } from "../shared-types";
 
-import { jsonPlaceholderBaseURL } from "../constants/BaseUrl";
-import { Todo, TodoUpdateInput } from "../types";
+// src/api/todoService.ts
+
+// Updated base URL to point to the local server
+const localBaseURL = "http://localhost:3000";
 
 // Fetch all todos from the server
 export async function getTodos(): Promise<Todo[]> {
-  const userIdQuery = `?userId=1`;
-  const response = await fetch(`${jsonPlaceholderBaseURL}/todos${userIdQuery}`);
+  const response = await fetch(`${localBaseURL}/todos`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -15,7 +17,7 @@ export async function getTodos(): Promise<Todo[]> {
 
 // Update a todo item on the server
 export async function updateTodo(todoUpdate: TodoUpdateInput): Promise<Todo> {
-  const response = await fetch(`${jsonPlaceholderBaseURL}/posts/${todoUpdate.id}`, {
+  const response = await fetch(`${localBaseURL}/todos/${todoUpdate.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -29,21 +31,35 @@ export async function updateTodo(todoUpdate: TodoUpdateInput): Promise<Todo> {
 }
 
 // Add a todo item on the server
-export async function addTodo(title: string = "Default Title", userId: number = 1): Promise<Todo> {
-  const response = await fetch(`${jsonPlaceholderBaseURL}/todos`, {
+export async function addTodo(text: string = "Default Title"): Promise<Todo> {
+  // Now add the new todo with this ID
+  const response = await fetch(`${localBaseURL}/todos`, {
     method: "POST",
-    body: JSON.stringify({
-      title,
-      completed: false, // Default value for completed is set to false
-      userId,
-    }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
+    body: JSON.stringify({
+      text,
+      completed: false, // Default value for completed is set to false
+    }),
   });
 
   if (!response.ok) {
     throw new Error("Error adding new todo");
   }
   return response.json();
+}
+
+// Delete a todo item on the server
+export async function deleteTodo(todoId: number): Promise<void> {
+  const response = await fetch(`${localBaseURL}/todos/${todoId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error deleting todo");
+  }
+
+  // You can return additional information if needed, for now, it's just a confirmation
+  return;
 }

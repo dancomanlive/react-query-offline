@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
-import { TodoUpdateInput } from "../types";
+import { TodoUpdateInput } from "../shared-types";
 import { useTodo } from "./useTodo";
 
 // usePausedMutations hook definition.
@@ -10,7 +10,7 @@ export function usePausedMutations() {
   // State variable to keep track of mutations that are paused due to no network access.
   const [pausedMutations, setPausedMutations] = useState<TodoUpdateInput[]>([]);
   // Retrieves the update function from useTodo to be used for mutation execution.
-  const { updateTodo } = useTodo();
+  const { updateTodoMutation } = useTodo();
   // Hook to access network state.
   const netInfo = useNetInfo();
 
@@ -26,7 +26,7 @@ export function usePausedMutations() {
 
         for (const mutationData of storedMutations) {
           try {
-            await updateTodo(mutationData);
+            await updateTodoMutation(mutationData);
             updatedPausedMutations = updatedPausedMutations.filter((m) => m.id !== mutationData.id);
           } catch (error) {
             console.error("Failed to update todo:", mutationData.id, error);

@@ -1,51 +1,57 @@
-// src/components/TodoList.tsx
 import React from "react";
-import { Button, FlatList, Text, View } from "react-native";
+import { Button, FlatList, Text, TextInput, View } from "react-native";
 import { useNetworkState } from "../hooks/useNetworkState";
-import { usePausedMutations } from "../hooks/usePausedMutations"; // Custom hook to manage paused mutations
-import { useTodo } from "../hooks/useTodo"; // Custom hook to manage todo fetching and state
-import { TodoItem } from "./TodoItem"; // Component for rendering individual todo items
+import { usePausedMutations } from "../hooks/usePausedMutations";
+import { useTodo } from "../hooks/useTodo";
+import useTodoActions from "../hooks/useTodoActions";
+import { styles } from "../styles/TodoList.styles";
+import TodoItem from "./TodoItem";
 
-// The main component for rendering the list of todos
 export default function TodoList() {
-  // Destructuring todos, fetching state, and the update function from the useTodo hook
-  const { todos, isFetching, updateTodo } = useTodo();
-  console.log("🚀 ~ file: TodoList.tsx:13 ~ TodoList ~ todos:", todos);
-  const isOnline = useNetworkState();
-  const { pausedMutations } = usePausedMutations(); // Retrieve paused mutations from the custom hook
-  // Logging paused mutations to the console for debugging purposes
-  // console.log("🚀 ~ file: TodoList.tsx:13 ~ TodoList ~ pausedMutations:", pausedMutations);
+  // Retrieves the list of todos and the fetching status from the useTodo hook.
+  const { todos, isFetching } = useTodo();
 
-  // Conditional rendering based on the fetching state of the todos
+  // Retrieves the network state (online or offline) from the useNetworkState hook.
+  const isOnline = useNetworkState();
+
+  // Utilizes the useTodoActions hook for managing adding todo actions.
+  const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
+    useTodoActions();
+
+  // Retrieves paused mutations, which represent pending operations while offline.
+  const { pausedMutations } = usePausedMutations();
+
+  // Displays a loading text when the todos are being fetched.
   if (isFetching) {
-    return <Text>Loading...</Text>; // Display loading text if fetching is in progress
+    return <Text>Loading...</Text>;
   }
 
-  // The main view for the TodoList component
+  // Main view for the TodoList component.
   return (
-    <View style={{ top: 100 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: 10,
-          backgroundColor: "lightblue",
-        }}
-      >
+    <View style={styles.container}>
+      <View style={styles.header}>
+        {/* Displays network status (online/offline) */}
         <Text>{isOnline ? "You are online." : "You are offline."}</Text>
 
-        <Button
-          onPress={() => {
-            /* handle add todo */
-          }}
-          title="Add Todo"
-        />
+        {/* Conditionally renders the add todo input or the add button based on the isAdding state. */}
+        {isAdding ? (
+          <TextInput
+            placeholder="Enter todo text"
+            value={newTodoText}
+            onChangeText={setNewTodoText}
+            onSubmitEditing={handleSubmitEditing}
+            autoFocus
+            returnKeyType="done"
+          />
+        ) : (
+          <Button onPress={handleAddPress} title="Add Todo" />
+        )}
       </View>
+      {/* Renders a list of TodoItems. Each item is passed to the TodoItem component. */}
       <FlatList
-        data={todos} // Data source for FlatList is the list of todos
-        keyExtractor={(item) => item.id.toString()} // Extracting keys for list items
-        renderItem={({ item }) => <TodoItem todo={item} updateTodo={updateTodo} />} // Rendering TodoItem for each todo
+        data={todos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <TodoItem todo={item} />}
       />
     </View>
   );
