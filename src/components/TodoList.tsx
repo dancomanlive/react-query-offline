@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, FlatList, Text, TextInput, View } from "react-native";
 import { useNetworkState } from "../hooks/useNetworkState";
-import { usePausedMutations } from "../hooks/usePausedMutations";
 import { useTodo } from "../hooks/useTodo";
 import useTodoActions from "../hooks/useTodoActions";
 import { styles } from "../styles/TodoList.styles";
@@ -17,9 +16,6 @@ export default function TodoList() {
   // Utilizes the useTodoActions hook for managing adding todo actions.
   const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
     useTodoActions();
-
-  // Retrieves paused mutations, which represent pending operations while offline.
-  const { pausedMutations } = usePausedMutations();
 
   // Displays a loading text when the todos are being fetched.
   if (isFetching) {

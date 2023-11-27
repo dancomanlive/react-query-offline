@@ -6,11 +6,11 @@ export const useNetworkState = () => {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state: NetInfoState) => {
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
-      console.log("Details", state.details);
-      console.log("Internet", state.isInternetReachable);
-      console.log("Wifi Enabled", state.isWifiEnabled);
+      // console.log("Connection type", state.type);
+      // console.log("Is connected?", state.isConnected);
+      // console.log("Details", state.details);
+      // console.log("Internet", state.isInternetReachable);
+      // console.log("Wifi Enabled", state.isWifiEnabled);
       // Check if the connection type is 'wifi', you can check for other types as well
       const onWifi = state.type === "wifi";
       const connected = state.isConnected && onWifi;

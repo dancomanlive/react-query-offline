@@ -4,6 +4,7 @@ import { UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { Todo, TodoUpdateInput } from "../shared-types";
 
+// Custom solution for handling mutation persistence
 export function updateTodoMutationOptions(): UseMutationOptions<
   Todo,
   Error,
@@ -44,7 +45,10 @@ export function updateTodoMutationOptions(): UseMutationOptions<
         const pausedMutations = pausedMutationsString ? JSON.parse(pausedMutationsString) : [];
 
         // Check if the current mutation is already stored to prevent duplicates.
-        const existingMutationIndex = pausedMutations.findIndex((m) => m.id === updatedTodo.id);
+        const existingMutationIndex = pausedMutations.findIndex(
+          (m: Todo) => m.id === updatedTodo.id
+        );
+
         // Update the stored mutation with new data or push it if it's a new mutation.
         if (existingMutationIndex === -1) {
           pausedMutations.push(updatedTodo);
