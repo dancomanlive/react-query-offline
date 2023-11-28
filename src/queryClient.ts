@@ -11,3 +11,5 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// queryClient.getQueryCache().subscribe(console.log);

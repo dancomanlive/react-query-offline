@@ -15,6 +15,7 @@ export const useTodo = () => {
   // Sets up mutations for updating, adding, and deleting todos.
   // Each mutation uses options defined in separate helper files for clarity and reusability.
   const updateTodoMutation = useMutation(updateTodoMutationOptions());
+  // console.log("🚀 ~ file: useTodo.ts:18 ~ useTodo ~ updateTodoMutation:", updateTodoMutation.error);
   const addTodoMutation = useMutation(addTodoMutationOptions());
   const deleteTodoMutation = useMutation(deleteTodoMutationOptions());
 

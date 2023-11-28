@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { Button, FlatList, Text, TextInput, View } from "react-native";
 import { useNetworkState } from "../hooks/useNetworkState";
@@ -7,6 +8,15 @@ import { styles } from "../styles/TodoList.styles";
 import TodoItem from "./TodoItem";
 
 export default function TodoList() {
+  const queryClient = useQueryClient();
+  // queryClient.getQueryCache().subscribe((queryCacheNotifyEvent) => {
+  //   if (!queryCacheNotifyEvent) {
+  //     return;
+  //   }
+
+  //   console.log(JSON.stringify(queryCacheNotifyEvent, null, 2));
+  // });
+
   // Retrieves the list of todos and the fetching status from the useTodo hook.
   const { todos, isFetching } = useTodo();
 
@@ -18,9 +28,9 @@ export default function TodoList() {
     useTodoActions();
 
   // Displays a loading text when the todos are being fetched.
-  if (isFetching) {
-    return <Text>Loading...</Text>;
-  }
+  // if (isFetching) {
+  //   return <Text>Loading...</Text>;
+  // }
 
   // Main view for the TodoList component.
   return (
