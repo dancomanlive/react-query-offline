@@ -1,5 +1,6 @@
 import { UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
+import { useNetworkState } from "../hooks/useNetworkState";
 import { Todo } from "../shared-types";
 
 export function deleteTodoMutationOptions(): UseMutationOptions<
@@ -9,6 +10,7 @@ export function deleteTodoMutationOptions(): UseMutationOptions<
   { previousTodos?: Todo[] }
 > {
   const queryClient = useQueryClient();
+  const isConnected = useNetworkState();
   return {
     // The function to call when this mutation is executed. It calls the deleteTodo function from the todoService.
     mutationFn: todoService.deleteTodo,
@@ -21,12 +23,14 @@ export function deleteTodoMutationOptions(): UseMutationOptions<
       // Snapshot the current state of todos to allow for potential rollbacks.
       const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]);
 
-      // Optimistically remove the todo from the local cache to update the UI immediately.
-      if (previousTodos) {
-        queryClient.setQueryData<Todo[]>(
-          ["todos"],
-          previousTodos.filter((todo) => todo.id !== todoId)
-        );
+      if (!isConnected) {
+        // Optimistically remove the todo from the local cache to update the UI immediately.
+        if (previousTodos) {
+          queryClient.setQueryData<Todo[]>(
+            ["todos"],
+            previousTodos.filter((todo) => todo.id !== todoId)
+          );
+        }
       }
 
       // Return the context for potential rollback in case of error.

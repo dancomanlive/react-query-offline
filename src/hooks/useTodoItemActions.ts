@@ -53,6 +53,14 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
     deleteTodoMutation.mutate(todo.id);
   };
 
+  const updateTodoMutationStatus = {
+    isSuccess: updateTodoMutation.isSuccess,
+    isError: updateTodoMutation.isError,
+    isPaused: updateTodoMutation.isPaused,
+    isPending: updateTodoMutation.isPending,
+    error: updateTodoMutation.error,
+  };
+
   // Exposing state and action handlers for use in components.
   return {
     editText,
@@ -62,13 +70,7 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
     handleComplete,
     toggleEdit,
     handleDeleteTodo,
-    updateStatus: {
-      isSuccess: updateTodoMutation.isSuccess,
-      isError: updateTodoMutation.isError,
-      isPaused: updateTodoMutation.isPaused,
-      isPending: updateTodoMutation.isPending,
-      error: updateTodoMutation.error,
-    },
+    updateTodoMutationStatus,
   };
 };
 

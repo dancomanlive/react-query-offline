@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import useTodoItemActions from "../hooks/useTodoItemActions";
 import { Todo } from "../shared-types";
 import { styles } from "../styles/TodoItem.styles";
+import { renderUpdateStatus } from "../utils/renderStatus";
 import EditTodoView from "./EditTodo";
 import ViewTodo from "./ViewTodo";
 
@@ -23,28 +24,14 @@ export default function TodoItem({ todo }: TodoItemProps) {
     handleComplete,
     toggleEdit,
     handleDeleteTodo,
-    updateStatus,
+    updateTodoMutationStatus,
   } = useTodoItemActions({ todo });
-
-  const renderUpdateStatus = () => {
-    if (updateStatus.isPending) {
-      return "Update is pending... ";
-    }
-    if (updateStatus.isPaused) {
-      return "Update is paused ";
-    }
-    if (updateStatus.isSuccess) {
-      return "Update is successful! ";
-    }
-    if (updateStatus.isError) {
-      return `Error: ${updateStatus.error ? `${updateStatus.error.message} ` : "Unknown error"}`;
-    }
-    return "No status to display ";
-  };
 
   return (
     <View style={styles.todoItem}>
-      <Text style={{ color: "purple", fontStyle: "italic" }}>{renderUpdateStatus()}</Text>
+      <Text style={{ color: "purple", fontStyle: "italic" }}>
+        {renderUpdateStatus(updateTodoMutationStatus)}
+      </Text>
 
       {/* Conditional rendering based on whether the todo item is being edited or not. */}
       {isEditing ? (

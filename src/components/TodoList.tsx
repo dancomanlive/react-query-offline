@@ -13,7 +13,7 @@ export default function TodoList() {
   const { data: todos } = useQuery<Todo[], Error>(todosQueryOptions);
 
   // Retrieves the network state (online or offline) from the useNetworkState hook.
-  const isOnline = useNetworkState();
+  const isConnected = useNetworkState();
 
   // Utilizes the useTodoActions hook for managing adding todo actions.
   const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
@@ -22,7 +22,7 @@ export default function TodoList() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{isOnline ? "You are online." : "You are offline."}</Text>
+        <Text>{isConnected ? "You are online." : "You are offline."}</Text>
 
         {/* Conditionally renders the add todo input or the add button based on the isAdding state. */}
         {isAdding ? (

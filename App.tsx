@@ -5,10 +5,8 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import React from "react";
 import * as ReactQueryDevtools from "react-query-native-devtools";
 import ToastManager from "toastify-react-native";
-import { updateTodo } from "./src/api/todoService";
 import TodoList from "./src/components/TodoList";
 import { queryClient } from "./src/queryClient";
-import { TodoUpdateInput } from "./src/shared-types";
 
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
   ReactQueryDevtools.addPlugin({ queryClient });
@@ -16,16 +14,6 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
 
 const persister = createAsyncStoragePersister({
   storage: AsyncStorage,
-});
-
-// Default mutation function for todos
-const defaultUpdateTodoMutation = (todoUpdate: TodoUpdateInput) => {
-  return updateTodo(todoUpdate);
-};
-
-// Set the default mutation for 'todos'
-queryClient.setMutationDefaults(["todos"], {
-  mutationFn: defaultUpdateTodoMutation,
 });
 
 export default function App() {

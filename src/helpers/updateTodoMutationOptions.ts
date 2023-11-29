@@ -6,7 +6,7 @@ import { Todo, TodoUpdateInput } from "../shared-types";
 // Custom solution for handling mutation persistence
 export function updateTodoMutationOptions() {
   const queryClient = useQueryClient();
-  const isOnline = useNetworkState();
+  const isConnected = useNetworkState();
   return {
     mutationFn: todoService.updateTodo,
     onMutate: async (updatedTodo: TodoUpdateInput) => {
@@ -16,8 +16,7 @@ export function updateTodoMutationOptions() {
       const context = { previousTodos };
 
       // If offline, store the mutation in the offline cache
-      if (!isOnline) {
-        // await updateOfflineCache({ type: "update", data: updatedTodo, timestamp: Date.now() });
+      if (!isConnected) {
         // Perform the optimistic update for online scenario
         if (previousTodos) {
           queryClient.setQueryData<Todo[]>(["todos"], (old = []) =>
