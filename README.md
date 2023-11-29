@@ -10,7 +10,7 @@
 - ```npm run dev```
 
 # running on device
-- run ifconfig on mac and use ip address instead of localhost to connect to express
+- run ifconfig on mac and use ip address for EXPO_PUBLIC_BASE_URL(see .env.example) to connect to express
 
 
 To intercept calls to and from your Express server using Charles Proxy, you need to set up your development environment and mobile device to route traffic through Charles. Here's a basic guide on how to do this:
