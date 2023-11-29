@@ -1,10 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useTodo } from "./useTodo";
+import { addTodoMutationOptions } from "../helpers/addTodoMutationOptions";
 
 // useTodoActions is a custom hook for managing the state and actions related to adding a new todo item.
 export default function useTodoActions() {
   // Extracts the addTodoMutation function from the useTodo hook.
-  const { addTodoMutation } = useTodo();
+  const addTodoMutation = useMutation(addTodoMutationOptions());
 
   // State to manage whether the add todo input is visible.
   const [isAdding, setIsAdding] = useState(false);
@@ -21,7 +22,7 @@ export default function useTodoActions() {
   // After submitting, it resets the newTodoText to an empty string and sets isAdding to false to hide the input field.
   const handleSubmitEditing = () => {
     if (newTodoText.trim()) {
-      addTodoMutation(newTodoText);
+      addTodoMutation.mutate(newTodoText);
       setNewTodoText("");
     }
     setIsAdding(false);

@@ -4,7 +4,7 @@ import { Todo, TodoUpdateInput } from "../shared-types";
 // src/api/todoService.ts
 
 // Updated base URL to point to the local server
-const localBaseURL = "http://localhost:3000";
+const localBaseURL = process.env.EXPO_PUBLIC_BASE_URL;
 
 // Fetch all todos from the server
 export async function getTodos(): Promise<Todo[]> {

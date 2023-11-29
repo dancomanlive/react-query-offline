@@ -1,15 +1,23 @@
-// src/queryClient.ts
 import { QueryClient } from "@tanstack/react-query";
 
-/* The code is creating a new instance of the `QueryClient` class and exporting it as `queryClient`.
-The `QueryClient` is a client for managing and caching data queries in the React Query library. */
 export const queryClient = new QueryClient({
   defaultOptions: {
+    mutations: {
+      onError: (error) => {
+        // Toast.error("Global mutation error", "top");
+        console.log("Global mutation error:", error);
+      },
+      onSuccess: (data) => {
+        // Toast.success("Global mutation success");
+        console.log("Global mutation success:", data);
+      },
+      // other default options for mutations can be specified here
+    },
     queries: {
       gcTime: Infinity,
       staleTime: Infinity,
+      // other default options for queries can be specified here
     },
   },
+  // other configurations for QueryClient
 });
-
-// queryClient.getQueryCache().subscribe(console.log);

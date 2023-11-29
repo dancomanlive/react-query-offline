@@ -1,6 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { deleteTodoMutationOptions } from "../helpers/deleteTodoMutationOptions";
+import { updateTodoMutationOptions } from "../helpers/updateTodoMutationOptions";
 import { Todo } from "../shared-types";
-import { useTodo } from "./useTodo";
 
 // Props interface for the useTodoItemActions hook.
 interface useTodoItemActionsProps {
@@ -10,8 +12,8 @@ interface useTodoItemActionsProps {
 // Custom hook for managing actions and state related to individual todo items.
 const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
   // Extract mutation functions from the useTodo hook.
-  const { updateTodoMutation, deleteTodoMutation } = useTodo();
-
+  const updateTodoMutation = useMutation(updateTodoMutationOptions());
+  const deleteTodoMutation = useMutation(deleteTodoMutationOptions());
   // State for managing the editable text of the todo item.
   const [editText, setEditText] = useState(todo.text);
 
@@ -21,7 +23,7 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
   // Function to handle saving the edited text of a todo item.
   // Calls the updateTodoMutation with updated text and then exits editing mode.
   const handleSave = () => {
-    updateTodoMutation({
+    updateTodoMutation.mutate({
       id: todo.id,
       text: editText,
       completed: todo.completed, // Preserve the existing completion status.
@@ -32,7 +34,7 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
   // Function to handle toggling the completion status of a todo item.
   // It inverts the current completed status of the todo.
   const handleComplete = () => {
-    updateTodoMutation({
+    updateTodoMutation.mutate({
       id: todo.id,
       completed: !todo.completed,
     });
@@ -48,7 +50,7 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
   // Function to handle the deletion of a todo item.
   // Calls the deleteTodoMutation with the id of the todo item.
   const handleDeleteTodo = () => {
-    deleteTodoMutation(todo.id);
+    deleteTodoMutation.mutate(todo.id);
   };
 
   // Exposing state and action handlers for use in components.
@@ -60,6 +62,13 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
     handleComplete,
     toggleEdit,
     handleDeleteTodo,
+    updateStatus: {
+      isSuccess: updateTodoMutation.isSuccess,
+      isError: updateTodoMutation.isError,
+      isPaused: updateTodoMutation.isPaused,
+      isPending: updateTodoMutation.isPending,
+      error: updateTodoMutation.error,
+    },
   };
 };
 
