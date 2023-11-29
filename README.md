@@ -36,7 +36,7 @@ To intercept calls to and from your Express server using Charles Proxy, you need
    - Use your app to make a request to your Express server.
    - Charles should now capture the request and response, allowing you to view or modify the data.
 
-<img width="1059" alt="Screenshot 2023-11-29 at 12 06 07" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/5c8586c3-8cba-42ee-b4fc-642abd7c78f5">
 
 
+<img width="1060" alt="Screenshot 2023-11-29 at 12 15 59" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/c94bfc19-f6ff-4148-953b-45ee8fed15d2">
 
