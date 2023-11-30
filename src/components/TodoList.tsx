@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { Button, FlatList, Text, TextInput, View } from "react-native";
+import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { Button, FlatList, ScrollView, Text, TextInput, View } from "react-native";
 import { todosQueryOptions } from "../helpers/todosQueryOptions";
 import { useNetworkState } from "../hooks/useNetworkState";
 import useTodoActions from "../hooks/useTodoActions";
@@ -12,6 +12,8 @@ export default function TodoList() {
   // Retrieves the list of todos and the fetching status from the useTodo hook.
   const { data: todos } = useQuery<Todo[], Error>(todosQueryOptions);
 
+  const [cacheCleared, setCacheCleared] = useState(false);
+
   // Retrieves the network state (online or offline) from the useNetworkState hook.
   const isConnected = useNetworkState();
 
@@ -19,11 +21,21 @@ export default function TodoList() {
   const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
     useTodoActions();
 
+  const isMutating = useIsMutating();
+  const queryClient = useQueryClient();
+  const mutationCache = queryClient.getMutationCache();
+  const mutations = mutationCache.getAll();
+
+  const clearMutationsCache = () => {
+    mutationCache.clear();
+    setCacheCleared((prevState) => !prevState);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text>{isConnected ? "You are online." : "You are offline."}</Text>
-
+        {isMutating > 0 && <Text>{isMutating}</Text>}
         {/* Conditionally renders the add todo input or the add button based on the isAdding state. */}
         {isAdding ? (
           <TextInput
@@ -44,6 +56,13 @@ export default function TodoList() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <TodoItem todo={item} />}
       />
+      <Text style={{ fontStyle: "italic" }}>* Add Todo status is not yet implemented</Text>
+      {mutations.length > 0 && (
+        <Button onPress={clearMutationsCache} title="Clear Mutations Cache" />
+      )}
+      <ScrollView style={{ height: "80%", top: 10 }}>
+        <Text>{mutations.length > 0 && JSON.stringify(mutations, null, 2)}</Text>
+      </ScrollView>
     </View>
   );
 }

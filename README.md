@@ -36,6 +36,25 @@ To intercept calls to and from your Express server using Charles Proxy, you need
    - Use your app to make a request to your Express server.
    - Charles should now capture the request and response, allowing you to view or modify the data.
 
+# serverless deploy
+
+1. Install Serverless globally
+npm install -g serverless
+
+2. Configure AWS credentials for Serverless
+serverless config credentials --provider aws --key ACCESS_KEY --secret SECRET_KEY
+
+3. Install npm dependencies
+npm install
+
+4. Compile TypeScript to JavaScript and output to 'dist' folder
+npx tsc --outDir dist
+
+5. Deploy to AWS Lambda
+serverless deploy
+
+6. Change BASE_URL in .env accordingly
+
 
 
 <img width="1060" alt="Screenshot 2023-11-29 at 12 15 59" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/c94bfc19-f6ff-4148-953b-45ee8fed15d2">

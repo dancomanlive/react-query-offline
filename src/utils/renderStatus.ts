@@ -23,5 +23,5 @@ export const renderUpdateStatus = (updateTodoMutationStatus: Props) => {
         : "Unknown error"
     }`;
   }
-  return "No status to display(Add Todo status not implemented)  ";
+  return "No status to display  ";
 };
