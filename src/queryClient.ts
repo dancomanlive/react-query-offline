@@ -14,6 +14,7 @@ export const queryClient = new QueryClient({
       // other default options for mutations can be specified here
     },
     queries: {
+      networkMode: "offlineFirst",
       gcTime: Infinity,
       staleTime: Infinity,
       // other default options for queries can be specified here

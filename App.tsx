@@ -1,6 +1,7 @@
 // src/App.tsx
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import { onlineManager } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import React from "react";
 import * as ReactQueryDevtools from "react-query-native-devtools";
@@ -48,10 +49,11 @@ export default function App() {
   return (
     <PersistQueryClientProvider
       onSuccess={() => {
-        queryClient.resumePausedMutations().then(() => {
-          console.log("Resumed paused mutations");
-          queryClient.invalidateQueries();
-        });
+        if (onlineManager.isOnline()) {
+          queryClient.resumePausedMutations().then(() => {
+            queryClient.invalidateQueries();
+          });
+        }
       }}
       persistOptions={{ persister }}
       client={queryClient}

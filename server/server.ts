@@ -2,6 +2,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
+import serverless from "serverless-http";
 
 const app = express();
 const port = 3000;
@@ -80,6 +81,8 @@ app.get("/", (req: express.Request, res: express.Response) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server listening at http://localhost:${port}`);
+// });
+
+module.exports.handler = serverless(app);

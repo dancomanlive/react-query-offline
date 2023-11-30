@@ -1,0 +1,28 @@
+service: react-query-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: eu-central-1
+  memorySize: 128
+
+functions:
+  app:
+    handler: dist/server.handler
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: /todos
+          method: get
+      - http:
+          path: /todos
+          method: post
+      - http:
+          path: /todos/{id}
+          method: patch
+      - http:
+          path: /todos/{id}
+          method: delete
