@@ -80,9 +80,9 @@ app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Welcome to the Todo API!");
 });
 
-// Start the server
-// app.listen(port, () => {
-//   console.log(`Server listening at http://localhost:${port}`);
-// });
+//Start the server
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
 
 module.exports.handler = serverless(app);

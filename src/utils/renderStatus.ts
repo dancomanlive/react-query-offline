@@ -3,7 +3,7 @@ interface Props {
   isError: boolean;
   isPaused: boolean;
   isPending: boolean;
-  error: Error;
+  error: Error | null;
 }
 
 export const renderUpdateStatus = (updateTodoMutationStatus: Props) => {

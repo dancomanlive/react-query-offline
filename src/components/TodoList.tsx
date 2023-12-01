@@ -1,31 +1,36 @@
+import { Feather } from "@expo/vector-icons";
 import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { Button, FlatList, ScrollView, Text, TextInput, View } from "react-native";
+import { Button, FlatList, Text, TextInput, View } from "react-native";
 import { todosQueryOptions } from "../helpers/todosQueryOptions";
 import { useNetworkState } from "../hooks/useNetworkState";
 import useTodoActions from "../hooks/useTodoActions";
-import { Todo } from "../shared-types";
+import { Mutation, MutationStateContext, Todo } from "../shared-types";
 import { styles } from "../styles/TodoList.styles";
+import MutationsList from "./MutationList";
 import TodoItem from "./TodoItem";
 
 export default function TodoList() {
-  // Retrieves the list of todos and the fetching status from the useTodo hook.
-  const { data: todos } = useQuery<Todo[], Error>(todosQueryOptions);
-
-  const [cacheCleared, setCacheCleared] = useState(false);
-
-  // Retrieves the network state (online or offline) from the useNetworkState hook.
-  const isConnected = useNetworkState();
-
-  // Utilizes the useTodoActions hook for managing adding todo actions.
-  const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
-    useTodoActions();
-
   const isMutating = useIsMutating();
   const queryClient = useQueryClient();
   const mutationCache = queryClient.getMutationCache();
   const mutations = mutationCache.getAll();
 
+  console.log(JSON.stringify(mutations, null, 2));
+
+  // Retrieves the list of todos and the fetching status from the useTodo hook.
+  const { data: todos } = useQuery<Todo[], Error>(todosQueryOptions);
+
+  const [_, setCacheCleared] = useState(false);
+
+  // Utilizes the useTodoActions hook for managing adding todo actions.
+  const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
+    useTodoActions();
+
+  // Retrieves the network state (online or offline) from the useNetworkState hook.
+  const isConnected = useNetworkState();
+
+  // The function `clearMutationsCache` clears the mutation cache and updates the state of `cacheCleared`.
   const clearMutationsCache = () => {
     mutationCache.clear();
     setCacheCleared((prevState) => !prevState);
@@ -34,7 +39,19 @@ export default function TodoList() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{isConnected ? "You are online." : "You are offline."}</Text>
+        <Text>
+          {isConnected ? (
+            <>
+              <Feather name="wifi" size={34} color="green" />
+              <Text> You are online.</Text>
+            </>
+          ) : (
+            <>
+              <Feather name="wifi-off" size={34} color="red" />
+              <Text> You are offline.</Text>
+            </>
+          )}
+        </Text>
         {isMutating > 0 && <Text>{isMutating}</Text>}
         {/* Conditionally renders the add todo input or the add button based on the isAdding state. */}
         {isAdding ? (
@@ -56,13 +73,17 @@ export default function TodoList() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <TodoItem todo={item} />}
       />
-      <Text style={{ fontStyle: "italic" }}>* Add Todo status is not yet implemented</Text>
-      {mutations.length > 0 && (
-        <Button onPress={clearMutationsCache} title="Clear Mutations Cache" />
-      )}
-      <ScrollView style={{ height: "80%", top: 10 }}>
-        <Text>{mutations.length > 0 && JSON.stringify(mutations, null, 2)}</Text>
-      </ScrollView>
+
+      <View style={{ flex: 4 }}>
+        {mutations.length > 0 && (
+          <View style={{ alignSelf: "flex-start" }}>
+            <Button onPress={clearMutationsCache} title="Clear Mutations Cache" />
+          </View>
+        )}
+        <MutationsList
+          mutations={mutations as unknown as Mutation<Todo, Error, void, MutationStateContext>[]}
+        />
+      </View>
     </View>
   );
 }

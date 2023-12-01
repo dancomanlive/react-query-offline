@@ -5529,11 +5529,6 @@ react-native-flipper@^0.212.0:
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.212.0.tgz#b3fdd47676ecd09a25edd77a1466acace6276762"
   integrity sha512-bDRfIgE3v/jjEEdnvGP0T6maDD+bXhDAQ/SZUYTKd/CQ6YIU1c0EF+e0urU62LNMv6XEFQKz226McdddyVhYZA==
 
-react-native-iphone-x-helper@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
-  integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
-
 react-native-modal@^13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
@@ -5541,13 +5536,6 @@ react-native-modal@^13.0.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
-
-react-native-responsive-fontsize@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-responsive-fontsize/-/react-native-responsive-fontsize-0.5.1.tgz#c39fa2212ecced2bac879211a7b25106534f72d2"
-  integrity sha512-G77iPzrf3BHxMxVm6G3Mw3vPImIdq+jLLXhYoOjWei6i9J3/jzUNUhNdRWvp49Csb5prhbVBLPM+pYZz+b3ESQ==
-  dependencies:
-    react-native-iphone-x-helper "^1.3.1"
 
 react-native-safe-area-context@^4.7.4:
   version "4.7.4"
@@ -6371,11 +6359,6 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
-
-toastify-react-native@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/toastify-react-native/-/toastify-react-native-4.0.0.tgz#6019e72cd755ca3f619f5618143a98d713801729"
-  integrity sha512-c+9V1j39aANyASKglqwE4icQru9EBm8V8hYG6a1o7twT4Yk1OEEN0wRJJ8Ukrb7EBxm0M6WsQ7gEL5Ys6cTtew==
 
 toidentifier@1.0.1:
   version "1.0.1"

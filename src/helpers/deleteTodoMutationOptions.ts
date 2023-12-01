@@ -12,6 +12,7 @@ export function deleteTodoMutationOptions(): UseMutationOptions<
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    mutationKey: ["deleteTodo"],
     // The function to call when this mutation is executed. It calls the deleteTodo function from the todoService.
     mutationFn: todoService.deleteTodo,
 

@@ -28,20 +28,10 @@ export default function useTodoActions() {
     setIsAdding(false);
   };
 
-  // TODO add this to the relevant item in the FlatList
-  const addTodoMutationStatus = {
-    isSuccess: addTodoMutation.isSuccess,
-    isError: addTodoMutation.isError,
-    isPaused: addTodoMutation.isPaused,
-    isPending: addTodoMutation.isPending,
-    error: addTodoMutation.error,
-  };
-
   // The hook returns the state variables and the action handlers so they can be used in components.
   return {
     isAdding,
     newTodoText,
-    addTodoMutationStatus,
     setNewTodoText,
     handleAddPress,
     handleSubmitEditing,

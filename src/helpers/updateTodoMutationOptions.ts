@@ -2,12 +2,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { useNetworkState } from "../hooks/useNetworkState";
 import { Todo, TodoUpdateInput } from "../shared-types";
+import { Context } from "../shared-types/context";
 
 // Custom solution for handling mutation persistence
 export function updateTodoMutationOptions() {
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    mutationKey: ["updateTodo"],
     mutationFn: todoService.updateTodo,
     onMutate: async (updatedTodo: TodoUpdateInput) => {
       await queryClient.cancelQueries({ queryKey: ["todos"] });
@@ -28,7 +30,7 @@ export function updateTodoMutationOptions() {
       return context;
     },
 
-    onError: (error, variables, context) => {
+    onError: (context: Context) => {
       // Rollback optimistic updates if mutation fails
       if (context?.previousTodos) {
         queryClient.setQueryData(["todos"], context.previousTodos);

@@ -2,11 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { useNetworkState } from "../hooks/useNetworkState";
 import { Todo } from "../shared-types";
+import { Context } from "../shared-types/context";
 
 export function addTodoMutationOptions() {
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    mutationKey: ["addTodo"],
     // This function defines the mutation operation for adding a new todo.
     mutationFn: todoService.addTodo,
 
@@ -37,7 +39,7 @@ export function addTodoMutationOptions() {
     },
 
     // Called if the mutation encounters an error.
-    onError: (err, newTodoTitle, context) => {
+    onError: (context: Context) => {
       // If there's an error, revert the optimistic update using the previous state.
       if (context?.previousTodos) {
         queryClient.setQueryData(["todos"], context.previousTodos);

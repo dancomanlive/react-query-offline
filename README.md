@@ -4,14 +4,16 @@
 - ```cd ios && pod install```
 - ```yarn && yarn start```
 
-# server configuration
+# local server configuration
 
 - ```cd server && npm install```
 - ```npm run dev```
 
-# running on device
-- run ifconfig on mac and use ip address for EXPO_PUBLIC_BASE_URL(see .env.example) to connect to express
+# running local server on device
 
+- run ```ifconfig``` on mac and use ip address for EXPO_PUBLIC_BASE_URL_DEVELOPMENT(see .env.example) to connect to express
+
+# network interceptor
 
 To intercept calls to and from your Express server using Charles Proxy, you need to set up your development environment and mobile device to route traffic through Charles. Here's a basic guide on how to do this:
 
@@ -55,7 +57,4 @@ serverless deploy
 
 6. Change BASE_URL in .env accordingly
 
-
-
 <img width="1060" alt="Screenshot 2023-11-29 at 12 15 59" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/c94bfc19-f6ff-4148-953b-45ee8fed15d2">
-

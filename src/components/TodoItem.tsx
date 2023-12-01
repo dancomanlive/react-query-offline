@@ -1,9 +1,8 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import useTodoItemActions from "../hooks/useTodoItemActions";
 import { Todo } from "../shared-types";
 import { styles } from "../styles/TodoItem.styles";
-import { renderUpdateStatus } from "../utils/renderStatus";
 import EditTodoView from "./EditTodo";
 import ViewTodo from "./ViewTodo";
 
@@ -24,15 +23,10 @@ export default function TodoItem({ todo }: TodoItemProps) {
     handleComplete,
     toggleEdit,
     handleDeleteTodo,
-    updateTodoMutationStatus,
   } = useTodoItemActions({ todo });
 
   return (
     <View style={styles.todoItem}>
-      <Text style={{ color: "purple", fontStyle: "italic" }}>
-        {renderUpdateStatus(updateTodoMutationStatus)}
-      </Text>
-
       {/* Conditional rendering based on whether the todo item is being edited or not. */}
       {isEditing ? (
         // Edit mode: renders the EditTodoView component which provides an input for editing the todo's text
