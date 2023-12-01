@@ -57,4 +57,9 @@ serverless deploy
 
 6. Change BASE_URL in .env accordingly
 
-<img width="1060" alt="Screenshot 2023-11-29 at 12 15 59" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/c94bfc19-f6ff-4148-953b-45ee8fed15d2">
+
+
+<img width="1025" alt="Screenshot 2023-12-01 at 17 04 23" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/e87b2001-d48a-4d0b-8574-d53f347d565a">
+
+
+
