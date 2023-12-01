@@ -16,8 +16,6 @@ export default function TodoList() {
   const mutationCache = queryClient.getMutationCache();
   const mutations = mutationCache.getAll();
 
-  console.log(JSON.stringify(mutations, null, 2));
-
   // Retrieves the list of todos and the fetching status from the useTodo hook.
   const { data: todos } = useQuery<Todo[], Error>(todosQueryOptions);
 
