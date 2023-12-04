@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TodoUpdateInput } from "../shared-types";
+import { TodoUpdateInput } from "../types";
 
 interface Mutation {
   data: TodoUpdateInput;

@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { deleteTodoMutationOptions } from "../helpers/deleteTodoMutationOptions";
-import { updateTodoMutationOptions } from "../helpers/updateTodoMutationOptions";
-import { Todo } from "../shared-types";
+import { deleteTodoMutationOptions } from "../mutation-options/deleteTodoMutationOptions";
+import { updateTodoMutationOptions } from "../mutation-options/updateTodoMutationOptions";
+import { Todo } from "../types";
 
 // Props interface for the useTodoItemActions hook.
 interface useTodoItemActionsProps {

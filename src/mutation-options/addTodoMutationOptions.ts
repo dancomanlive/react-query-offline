@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { useNetworkState } from "../hooks/useNetworkState";
-import { Todo } from "../shared-types";
-import { Context } from "../shared-types/context";
+import { MutationStateContext, Todo } from "../types";
 
 export function addTodoMutationOptions() {
   const queryClient = useQueryClient();
@@ -39,7 +38,7 @@ export function addTodoMutationOptions() {
     },
 
     // Called if the mutation encounters an error.
-    onError: (context: Context) => {
+    onError: (context: MutationStateContext) => {
       // If there's an error, revert the optimistic update using the previous state.
       if (context?.previousTodos) {
         queryClient.setQueryData(["todos"], context.previousTodos);

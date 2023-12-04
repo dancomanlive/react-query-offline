@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { useNetworkState } from "../hooks/useNetworkState";
-import { Todo, TodoUpdateInput } from "../shared-types";
-import { Context } from "../shared-types/context";
+import { MutationStateContext, Todo, TodoUpdateInput } from "../types";
 
 // Custom solution for handling mutation persistence
 export function updateTodoMutationOptions() {
@@ -30,7 +29,7 @@ export function updateTodoMutationOptions() {
       return context;
     },
 
-    onError: (context: Context) => {
+    onError: (context: MutationStateContext) => {
       // Rollback optimistic updates if mutation fails
       if (context?.previousTodos) {
         queryClient.setQueryData(["todos"], context.previousTodos);

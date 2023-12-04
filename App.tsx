@@ -8,7 +8,7 @@ import * as ReactQueryDevtools from "react-query-native-devtools";
 import { addTodo, deleteTodo, updateTodo } from "./src/api/todoService";
 import TodoList from "./src/components/TodoList";
 import { queryClient } from "./src/queryClient";
-import { TodoUpdateInput } from "./src/shared-types";
+import { TodoUpdateInput } from "./src/types";
 
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
   ReactQueryDevtools.addPlugin({ queryClient });

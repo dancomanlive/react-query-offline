@@ -1,5 +1,5 @@
 // src/api/todoService.ts
-import { Todo, TodoUpdateInput } from "../shared-types";
+import { Todo, TodoUpdateInput } from "../types";
 
 // src/api/todoService.ts
 

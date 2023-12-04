@@ -13,7 +13,7 @@
 
 - run ```ifconfig``` on mac and use ip address for EXPO_PUBLIC_BASE_URL_DEVELOPMENT(see .env.example) to connect to express
 
-# network interceptor
+# network interceptor (optional for testing on device in development)
 
 To intercept calls to and from your Express server using Charles Proxy, you need to set up your development environment and mobile device to route traffic through Charles. Here's a basic guide on how to do this:
 

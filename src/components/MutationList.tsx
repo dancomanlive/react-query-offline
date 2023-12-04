@@ -1,10 +1,11 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Mutation } from "../shared-types";
+import { ScrollView, View } from "react-native";
+import { styles } from "../styles/MutationList.styles";
+import { Mutation } from "../types";
 import MutationInfo from "./MutationInfo";
 
 interface MutationListProps {
-  mutations: Mutation[];
+  mutations: Mutation[]; // Array of mutations.
 }
 
 const MutationsList = ({ mutations }: MutationListProps) => {
@@ -20,17 +21,5 @@ const MutationsList = ({ mutations }: MutationListProps) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  mutationItem: {
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 10,
-  },
-});
 
 export default MutationsList;

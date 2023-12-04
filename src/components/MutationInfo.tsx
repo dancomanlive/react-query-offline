@@ -1,18 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Mutation } from "../shared-types";
+import { Text, View } from "react-native";
+import { styles } from "../styles/MutationInfo.styles";
+import { Mutation } from "../types";
 
 interface MutationInfoProps {
-  mutation: Mutation;
+  mutation: Mutation; // Prop for mutation data.
 }
 
 const MutationInfo = ({ mutation }: MutationInfoProps) => {
-  // Format the submittedAt date
+  // Function to format timestamp into a readable date and time.
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
+  // Renders error message if there's an error in the mutation.
   const renderErrorMessage = () => {
     if (mutation.state.error) {
       return <Text style={styles.error}>Error: {mutation.state.error.message}</Text>;
@@ -20,6 +22,7 @@ const MutationInfo = ({ mutation }: MutationInfoProps) => {
     return null;
   };
 
+  // Determines the color of the status text based on the mutation's status.
   const getStatusColor = () => {
     switch (mutation.state.status) {
       case "pending":
@@ -57,23 +60,5 @@ const MutationInfo = ({ mutation }: MutationInfoProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  error: {
-    color: "red",
-  },
-});
 
 export default MutationInfo;

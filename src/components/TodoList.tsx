@@ -1,13 +1,15 @@
 import { Feather } from "@expo/vector-icons";
 import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { Button, FlatList, Text, TextInput, View } from "react-native";
-import { todosQueryOptions } from "../helpers/todosQueryOptions";
+import { Button, FlatList, Text, View } from "react-native";
 import { useNetworkState } from "../hooks/useNetworkState";
 import useTodoActions from "../hooks/useTodoActions";
-import { Mutation, MutationStateContext, Todo } from "../shared-types";
+import { todosQueryOptions } from "../query-options/todosQueryOptions";
 import { styles } from "../styles/TodoList.styles";
+import { Mutation, MutationStateContext, Todo } from "../types";
+import CustomButton from "./CustomButton";
 import MutationsList from "./MutationList";
+import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
 
 export default function TodoList() {
@@ -22,8 +24,14 @@ export default function TodoList() {
   const [_, setCacheCleared] = useState(false);
 
   // Utilizes the useTodoActions hook for managing adding todo actions.
-  const { isAdding, newTodoText, setNewTodoText, handleAddPress, handleSubmitEditing } =
-    useTodoActions();
+  const {
+    isAdding,
+    newTodoText,
+    setIsAdding,
+    setNewTodoText,
+    handleAddPress,
+    handleSubmitEditing,
+  } = useTodoActions();
 
   // Retrieves the network state (online or offline) from the useNetworkState hook.
   const isConnected = useNetworkState();
@@ -50,19 +58,17 @@ export default function TodoList() {
             </>
           )}
         </Text>
-        {isMutating > 0 && <Text>{isMutating}</Text>}
+        {isMutating > 0 && <Text>Mutations in progress: {isMutating}</Text>}
         {/* Conditionally renders the add todo input or the add button based on the isAdding state. */}
         {isAdding ? (
-          <TextInput
-            placeholder="Enter todo text"
-            value={newTodoText}
-            onChangeText={setNewTodoText}
-            onSubmitEditing={handleSubmitEditing}
-            autoFocus
-            returnKeyType="done"
+          <TodoInput
+            newTodoText={newTodoText}
+            setNewTodoText={setNewTodoText}
+            handleSubmitEditing={handleSubmitEditing}
+            onIconPress={() => setIsAdding(false)}
           />
         ) : (
-          <Button onPress={handleAddPress} title="Add Todo" />
+          <CustomButton title="Add Todo" onPress={handleAddPress} />
         )}
       </View>
       {/* Renders a list of TodoItems. Each item is passed to the TodoItem component. */}

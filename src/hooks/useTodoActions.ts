@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { addTodoMutationOptions } from "../helpers/addTodoMutationOptions";
+import { addTodoMutationOptions } from "../mutation-options/addTodoMutationOptions";
 
 // useTodoActions is a custom hook for managing the state and actions related to adding a new todo item.
 export default function useTodoActions() {
@@ -32,6 +32,7 @@ export default function useTodoActions() {
   return {
     isAdding,
     newTodoText,
+    setIsAdding,
     setNewTodoText,
     handleAddPress,
     handleSubmitEditing,

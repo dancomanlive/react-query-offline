@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import useTodoItemActions from "../hooks/useTodoItemActions";
-import { Todo } from "../shared-types";
 import { styles } from "../styles/TodoItem.styles";
+import { Todo } from "../types";
 import EditTodoView from "./EditTodo";
 import ViewTodo from "./ViewTodo";
 

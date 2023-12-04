@@ -1,7 +1,7 @@
 import { UseMutationOptions, useQueryClient } from "@tanstack/react-query";
 import * as todoService from "../api/todoService";
 import { useNetworkState } from "../hooks/useNetworkState";
-import { Todo } from "../shared-types";
+import { Todo } from "../types";
 
 export function deleteTodoMutationOptions(): UseMutationOptions<
   void,
