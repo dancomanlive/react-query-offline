@@ -60,3 +60,6 @@ npx tsc --outDir dist
 serverless deploy
 
 6. Change BASE_URL in .env accordingly
+
+# demo
+https://youtu.be/-dojurE_G-Q
