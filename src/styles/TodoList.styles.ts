@@ -12,4 +12,10 @@ export const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "lightblue",
   },
+  clearContainer: {
+    flex: 4,
+  },
+  clearPosition: {
+    alignSelf: "flex-start",
+  },
 });

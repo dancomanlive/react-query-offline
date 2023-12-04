@@ -78,9 +78,9 @@ export default function TodoList() {
         renderItem={({ item }) => <TodoItem todo={item} />}
       />
 
-      <View style={{ flex: 4 }}>
+      <View style={styles.clearContainer}>
         {mutations.length > 0 && (
-          <View style={{ alignSelf: "flex-start" }}>
+          <View style={styles.clearPosition}>
             <Button onPress={clearMutationsCache} title="Clear Mutations Cache" />
           </View>
         )}
