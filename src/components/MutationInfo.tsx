@@ -7,7 +7,7 @@ interface MutationInfoProps {
   mutation: Mutation; // Prop for mutation data.
 }
 
-const MutationInfo = ({ mutation }: MutationInfoProps) => {
+export default function MutationInfo({ mutation }: MutationInfoProps) {
   // Function to format timestamp into a readable date and time.
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -59,6 +59,4 @@ const MutationInfo = ({ mutation }: MutationInfoProps) => {
       ))}
     </View>
   );
-};
-
-export default MutationInfo;
+}

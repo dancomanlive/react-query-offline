@@ -10,7 +10,7 @@ interface useTodoItemActionsProps {
 }
 
 // Custom hook for managing actions and state related to individual todo items.
-const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
+export default function useTodoItemActions({ todo }: useTodoItemActionsProps) {
   // Extract mutation functions from the useTodo hook.
   const updateTodoMutation = useMutation(updateTodoMutationOptions());
   const deleteTodoMutation = useMutation(deleteTodoMutationOptions());
@@ -63,6 +63,4 @@ const useTodoItemActions = ({ todo }: useTodoItemActionsProps) => {
     toggleEdit,
     handleDeleteTodo,
   };
-};
-
-export default useTodoItemActions;
+}

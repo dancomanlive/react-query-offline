@@ -8,7 +8,7 @@ interface MutationListProps {
   mutations: Mutation[]; // Array of mutations.
 }
 
-const MutationsList = ({ mutations }: MutationListProps) => {
+export default function MutationsList({ mutations }: MutationListProps) {
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -20,6 +20,4 @@ const MutationsList = ({ mutations }: MutationListProps) => {
       </View>
     </ScrollView>
   );
-};
-
-export default MutationsList;
+}
