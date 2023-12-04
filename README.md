@@ -1,3 +1,7 @@
+# description
+
+This is an offline-first react native app example for iOS and Android. When you get back online, it automatically updates any changes to the server. This happens every time you reopen the app with an internet connection, making sure everything you did offline is saved and synced. It uses TanStack Query v5. This app was tested with a release ipa and an Express server deployed on AWS. Use an iPad or tablet, as it is not optimized for mobile devices. On iOS network changes are not detected when using a simulator, only a device.
+
 # client configuration
 
 - ```npx expo prebuild``` to get the ios and android folders to run the project on the simulator
@@ -38,7 +42,7 @@ To intercept calls to and from your Express server using Charles Proxy, you need
    - Use your app to make a request to your Express server.
    - Charles should now capture the request and response, allowing you to view or modify the data.
 
-# serverless deploy
+# serverless deploy (optional)
 
 1. Install Serverless globally
 npm install -g serverless
@@ -56,10 +60,3 @@ npx tsc --outDir dist
 serverless deploy
 
 6. Change BASE_URL in .env accordingly
-
-
-
-<img width="1025" alt="Screenshot 2023-12-01 at 17 04 23" src="https://github.com/dancomanlive/react-query-offline/assets/16872821/e87b2001-d48a-4d0b-8574-d53f347d565a">
-
-
-
