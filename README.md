@@ -59,7 +59,7 @@ npx tsc --outDir dist
 5. Deploy to AWS Lambda
 serverless deploy
 
-6. Update BASE_URL in .env
+6. Update EXPO_PUBLIC_BASE_URL_PRODUCTION in .env
 
 # demo
 https://youtu.be/-dojurE_G-Q
