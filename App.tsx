@@ -7,6 +7,8 @@ import React from "react";
 import * as ReactQueryDevtools from "react-query-native-devtools";
 import { addTodo, deleteTodo, updateTodo } from "./src/api/todoService";
 import TodoList from "./src/components/TodoList";
+import { mutationKeys } from "./src/constants/mutationKeys";
+import { queryKeys } from "./src/constants/queryKeys";
 import { queryClient } from "./src/queryClient";
 import { TodoUpdateInput } from "./src/types";
 
@@ -19,29 +21,29 @@ const persister = createAsyncStoragePersister({
 });
 
 const defaultAddTodoMutation = async (text: string) => {
-  await queryClient.cancelQueries({ queryKey: ["todos"] });
+  await queryClient.cancelQueries({ queryKey: [queryKeys.TODOS] });
   return addTodo(text);
 };
 
 const defaultDeleteTodoMutation = async (todoId: number) => {
-  await queryClient.cancelQueries({ queryKey: ["todos"] });
+  await queryClient.cancelQueries({ queryKey: [queryKeys.TODOS] });
   return deleteTodo(todoId);
 };
 
 const defaultUpdateTodoMutation = async (todoUpdate: TodoUpdateInput) => {
-  await queryClient.cancelQueries({ queryKey: ["todos"] });
+  await queryClient.cancelQueries({ queryKey: [queryKeys.TODOS] });
   return updateTodo(todoUpdate);
 };
 
-queryClient.setMutationDefaults(["addTodo"], {
+queryClient.setMutationDefaults([mutationKeys.ADD_TODO], {
   mutationFn: defaultAddTodoMutation,
 });
 
-queryClient.setMutationDefaults(["deleteTodo"], {
+queryClient.setMutationDefaults([mutationKeys.DELETE_TODO], {
   mutationFn: defaultDeleteTodoMutation,
 });
 
-queryClient.setMutationDefaults(["updateTodo"], {
+queryClient.setMutationDefaults([mutationKeys.UPDATE_TODO], {
   mutationFn: defaultUpdateTodoMutation,
 });
 
