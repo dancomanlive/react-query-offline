@@ -7,10 +7,10 @@ export function addTodoMutationOptions() {
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    // mutationKey is critical and must match the key used in setMutationDefaults
     mutationKey: ["addTodo"],
     // This function defines the mutation operation for adding a new todo.
     mutationFn: todoService.addTodo,
-
     // Called just before the mutation function is executed.
     onMutate: async (newTodoTitle: string) => {
       // Cancel any ongoing refetch operations for the 'todos' query.

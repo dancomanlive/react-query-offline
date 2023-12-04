@@ -50,7 +50,7 @@ const MutationInfo = ({ mutation }: MutationInfoProps) => {
       <Text>Completed: {mutation.state.data?.completed ? "Yes" : "No"}</Text>
 
       <Text style={styles.subtitle}>Previous Todos</Text>
-      {mutation.state.context.previousTodos.map((todo) => (
+      {mutation.state.context?.previousTodos.map((todo) => (
         <View key={todo.id}>
           <Text>ID: {todo.id}</Text>
           <Text>Text: {todo.text}</Text>

@@ -12,10 +12,10 @@ export function deleteTodoMutationOptions(): UseMutationOptions<
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    // mutationKey is critical and must match the key used in setMutationDefaults
     mutationKey: ["deleteTodo"],
     // The function to call when this mutation is executed. It calls the deleteTodo function from the todoService.
     mutationFn: todoService.deleteTodo,
-
     // Called immediately before the mutation function. Used for optimistic updates.
     onMutate: async (todoId) => {
       // Cancel any ongoing refetch queries for todos to prevent them from overwriting our optimistic update.

@@ -8,13 +8,15 @@ export function updateTodoMutationOptions() {
   const queryClient = useQueryClient();
   const isConnected = useNetworkState();
   return {
+    // mutationKey is critical and must match the key used in setMutationDefaults
     mutationKey: ["updateTodo"],
+    // The function to call when this mutation is executed. It calls the updateTodo function from the todoService.
     mutationFn: todoService.updateTodo,
+    // Called immediately before the mutation function. Used for optimistic updates.
     onMutate: async (updatedTodo: TodoUpdateInput) => {
       await queryClient.cancelQueries({ queryKey: ["todos"] });
 
       const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]);
-      const context = { previousTodos };
 
       // If offline, store the mutation in the offline cache
       if (!isConnected) {
@@ -26,7 +28,7 @@ export function updateTodoMutationOptions() {
         }
       }
 
-      return context;
+      return { previousTodos };
     },
 
     onError: (context: MutationStateContext) => {
