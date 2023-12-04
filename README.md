@@ -1,6 +1,6 @@
 # description
 
-This is an offline-first react native app example for iOS and Android. When you get back online, it automatically updates any changes to the server. This happens every time you reopen the app with an internet connection, making sure everything you did offline is saved and synced. It uses TanStack Query v5. This app was tested with a release ipa and an Express server deployed on AWS. Use an iPad or tablet, as it is not optimized for mobile devices. On iOS network changes are not detected when using a simulator, only a device.
+This is an offline-first react native app example for iOS and Android. When you get back online, it automatically updates any changes to the server. This happens every time you reopen the app with an internet connection, making sure everything you did offline is saved and synced. It uses TanStack Query v5. This app was tested with a release ipa on device and an Express server deployed on AWS. Use an iPad or tablet, as it is not optimized for mobile devices. On iOS network changes are not detected when using a simulator, only a device.
 
 # client configuration
 
