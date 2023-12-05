@@ -67,5 +67,4 @@ https://youtu.be/-dojurE_G-Q
 # roadmap
 - [x] Online CRUD
 - [x] Offline CRUD
-- [ ] Tests with RNTL
-- [ ] Integration with OpenAI Assistant API
+- [ ] Testing RNTL
