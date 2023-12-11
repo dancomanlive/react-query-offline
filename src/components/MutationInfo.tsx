@@ -1,56 +1,37 @@
+import { Mutation } from "@tanstack/react-query";
 import React from "react";
 import { Text, View } from "react-native";
 import { styles } from "../styles/MutationInfo.styles";
-import { Mutation } from "../types";
+import { MutationStateContext, Todo } from "../types";
+import { formatDate } from "../utils/formatDate";
+import { getStatusColor } from "../utils/getStatusColor";
 
 interface MutationInfoProps {
-  mutation: Mutation; // Prop for mutation data.
+  mutation: Mutation;
 }
 
 export default function MutationInfo({ mutation }: MutationInfoProps) {
-  // Function to format timestamp into a readable date and time.
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  };
-
-  // Renders error message if there's an error in the mutation.
-  const renderErrorMessage = () => {
-    if (mutation.state.error) {
-      return <Text style={styles.error}>Error: {mutation.state.error.message}</Text>;
-    }
-    return null;
-  };
-
-  // Determines the color of the status text based on the mutation's status.
-  const getStatusColor = () => {
-    switch (mutation.state.status) {
-      case "pending":
-        return "purple";
-      case "success":
-        return "green";
-      default:
-        return "black"; // Default color for other statuses
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mutation Information</Text>
       <Text>Mutation ID: {mutation.mutationId}</Text>
-      <Text style={{ color: getStatusColor() }}>Status: {mutation.state.status}</Text>
+      <Text style={{ color: getStatusColor(mutation.state.status) }}>
+        Status: {mutation.state.status}
+      </Text>
       <Text>Submitted At: {formatDate(mutation.state.submittedAt)}</Text>
       <Text>Failure Count: {mutation.state.failureCount}</Text>
 
-      {renderErrorMessage()}
+      {mutation.state.error && (
+        <Text style={styles.error}>Error: {mutation.state.error.message}</Text>
+      )}
 
       <Text style={styles.subtitle}>Current Todo</Text>
-      <Text>ID: {mutation.state.data?.id}</Text>
-      <Text>Text: {mutation.state.data?.text}</Text>
-      <Text>Completed: {mutation.state.data?.completed ? "Yes" : "No"}</Text>
+      <Text>ID: {(mutation.state.data as Todo)?.id}</Text>
+      <Text>Text: {(mutation.state.data as Todo)?.text}</Text>
+      <Text>Completed: {(mutation.state.data as Todo)?.completed ? "Yes" : "No"}</Text>
 
       <Text style={styles.subtitle}>Previous Todos</Text>
-      {mutation.state.context?.previousTodos.map((todo) => (
+      {(mutation.state.context as MutationStateContext).previousTodos?.map((todo: Todo) => (
         <View key={todo.id}>
           <Text>ID: {todo.id}</Text>
           <Text>Text: {todo.text}</Text>

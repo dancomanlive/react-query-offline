@@ -6,7 +6,7 @@ import { useNetworkState } from "../hooks/useNetworkState";
 import useTodoActions from "../hooks/useTodoActions";
 import { todosQueryOptions } from "../query-options/todosQueryOptions";
 import { styles } from "../styles/TodoList.styles";
-import { Mutation, MutationStateContext, Todo } from "../types";
+import { Todo } from "../types";
 import CustomButton from "./CustomButton";
 import MutationsList from "./MutationList";
 import TodoInput from "./TodoInput";
@@ -84,9 +84,7 @@ export default function TodoList() {
             <Button onPress={clearMutationsCache} title="Clear Mutations Cache" />
           </View>
         )}
-        <MutationsList
-          mutations={mutations as unknown as Mutation<Todo, Error, void, MutationStateContext>[]}
-        />
+        <MutationsList mutations={mutations} />
       </View>
     </View>
   );
